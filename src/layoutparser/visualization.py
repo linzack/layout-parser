@@ -21,6 +21,7 @@ from itertools import cycle
 import numpy as np
 from PIL import Image, ImageFont, ImageDraw, ImageColor
 import PIL
+from packaging import version
 
 import layoutparser
 from .elements import (
