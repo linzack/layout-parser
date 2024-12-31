@@ -20,6 +20,7 @@ from itertools import cycle
 
 import numpy as np
 from PIL import Image, ImageFont, ImageDraw, ImageColor
+import PIL
 
 import layoutparser
 from .elements import (
@@ -389,8 +390,12 @@ def draw_box(
                 text = str(ele.type) if not text else text + ": " + str(ele.type)
 
             start_x, start_y = ele.coordinates[:2]
-            text_w, text_h = font_obj.getsize(text)
-
+            if version.parse(PIL.__version__) > version.parse('9.5.0'):  # 9.5.0 later
+                left, top, right, bottom = font_obj.getbbox(text)
+                text_w, text_h = right - left, bottom - top
+            else:
+                text_w, text_h = font_obj.getsize(text)
+                
             text_box_object = Rectangle(
                 start_x, start_y, start_x + text_w, start_y + text_h
             )
